@@ -114,21 +114,21 @@
     <Compile Include="Authentication.cs" />
     <Compile Include="AuthToken.cs" />
     <Compile Include="LibrarySystem\Branch.cs" />
-    <Compile Include="AutocadHelpers\CircleObject.cs" />
-    <Compile Include="AutocadHelpers\ClickHandler\ClickOverride.cs" />
-    <Compile Include="AutocadHelpers\ClickHandler\ClickOverrideEditorExtension.cs" />
+    <Compile Include="Autocad\CircleObject.cs" />
+    <Compile Include="Autocad\ClickHandler\ClickOverride.cs" />
+    <Compile Include="Autocad\ClickHandler\ClickOverrideEditorExtension.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentStore.cs" />
-    <Compile Include="AutocadHelpers\DrawingObject.cs" />
-    <Compile Include="AutocadHelpers\ExtensionMethods.cs" />
-    <Compile Include="AutocadHelpers\ClickHandler\IClickOverrideInstance.cs" />
-    <Compile Include="AutocadHelpers\IDrawingObject.cs" />
+    <Compile Include="Autocad\DrawingObject.cs" />
+    <Compile Include="Autocad\ExtensionMethods.cs" />
+    <Compile Include="Autocad\ClickHandler\IClickOverrideInstance.cs" />
+    <Compile Include="Autocad\IDrawingObject.cs" />
     <Compile Include="LibrarySystem\ILibraryItem.cs" />
     <Compile Include="CoreMain.cs" />
     <Compile Include="LibrarySystem\Leaf.cs" />
     <Compile Include="LibrarySystem\Library.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="AutocadHelpers\PersistentObjectIdCollection.cs" />
+    <Compile Include="Autocad\PersistentObjectIdCollection.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -147,7 +147,7 @@
     <Compile Include="SettingsUserControl.xaml.cs">
       <DependentUpon>SettingsUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutocadHelpers\UIPanelToggle.cs" />
+    <Compile Include="Autocad\UIPanelToggle.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -171,11 +171,11 @@
     <None Include="Resources\UnLocked.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="AutocadHelpers\AutocadStyleResourceDictionary.xaml">
+    <Resource Include="Autocad\AutocadStyleResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Resource Include="AutocadHelpers\AutocadWindowStyleResourceDictionary.xaml">
+    <Resource Include="Autocad\AutocadWindowStyleResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
