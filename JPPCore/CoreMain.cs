@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 using System.Diagnostics;
 using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.Civil.ApplicationServices;
+using StatusBar = Autodesk.AutoCAD.Windows.StatusBar;
 
 [assembly: ExtensionApplication(typeof(JPP.Core.CoreMain))]
 [assembly: CommandClass(typeof(JPP.Core.CoreMain))]
@@ -25,6 +27,54 @@ namespace JPP.Core
     /// </summary>
     public class CoreMain : IExtensionApplication
     {
+        #region Public Variables
+
+        /// <summary>
+        /// Returns true if currently running under the Core Console
+        /// </summary>
+        public static bool CoreConsole
+        {
+            get
+            {
+                if (_coreConsole != null) return _coreConsole.Value;
+                try
+                {
+                    StatusBar testBar = Autodesk.AutoCAD.ApplicationServices.Application.StatusBar;
+                    _coreConsole = true;
+                }
+                catch (System.Exception)
+                {
+                    _coreConsole = false;
+                }
+
+                return _coreConsole.Value;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if currently running under Civil 3D
+        /// </summary>
+        public static bool Civil3D
+        {
+            get
+            {
+                if (_civil3D != null) return _civil3D.Value;
+                try
+                {
+                    //StatusBar testBar = Autodesk.AutoCAD.ApplicationServices.Application.StatusBar;
+                    CivilDocument testDocument = CivilApplication.ActiveDocument;
+                    _civil3D = true;
+                }
+                catch (System.Exception)
+                {
+                    _civil3D = false;
+                }
+
+                return _civil3D.Value;
+            }
+        }
+        #endregion
+
         #region Private variables
         /// <summary>
         /// PaletteSet containing the settings window
@@ -41,6 +91,16 @@ namespace JPP.Core
         /// </summary>
         // ReSharper disable once NotAccessedField.Local
         private static ClickOverride _clickOverride;
+
+        /// <summary>
+        /// Is software running under the core console?
+        /// </summary>
+        private static bool? _coreConsole;
+
+        /// <summary>
+        /// Is software running under civil 3d?
+        /// </summary>
+        private static bool? _civil3D;
         #endregion
 
         #region Autocad Extension Lifecycle
@@ -53,16 +113,23 @@ namespace JPP.Core
             //TODO: Verify this is actually required
             Properties.Settings.Default.Upgrade();
 
-            //Detect if ribbon is currently loaded, and if not wait until the application is Idle.
+            //If not running in console only, detect if ribbon is currently loaded, and if not wait until the application is Idle.
             //Throws an error if try to add to the menu with the ribbon unloaded
-            if (ComponentManager.Ribbon == null)
+            if (CoreConsole)
             {
-                Application.Idle += Application_Idle;                
+                InitJPP();
             }
             else
             {
-                //Ribbon existis, call the initialize method directly
-                InitJPP();
+                if (ComponentManager.Ribbon == null)
+                {
+                    Application.Idle += Application_Idle;
+                }
+                else
+                {
+                    //Ribbon existis, call the initialize method directly
+                    InitJPP();
+                }
             }
         }
 
