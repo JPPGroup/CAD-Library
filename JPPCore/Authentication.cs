@@ -33,27 +33,10 @@ namespace JPP.Core
         private bool CheckLicense()
         {
 #if DEBUG
-            Application.ShowAlertDialog("Running in debug mode, no authentication required.");
+            Logger.Log("Running in debug mode, no authentication required", Severity.Information);
             return true;
 #else
-            /*string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "license.key";
-            if (!File.Exists(path))
-            {
-                return false;
-            }
 
-            using (StreamReader sr = new StreamReader(File.OpenRead(path)))
-            {
-                string hash = sr.ReadToEnd();
-                UnicodeEncoding encoding = new UnicodeEncoding();
-                byte[] keyData = encoding.GetBytes(hash);
-
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-                RSAParameters param = new RSAParameters();                               
-            }
-
-            return false;*/
-            return true;
 #endif
         }
     }

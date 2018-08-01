@@ -2,26 +2,17 @@
 
 namespace JPP.Core
 {
-    public static class Logger
+    public class Logger : ILogger
     {
-        public static void Log(string Message)
+        public void Log(string message)
         {
-            Log(Message, Severity.Information);
+            Log(message, Severity.Information);
         }
 
-        public static void Log(string Message, Severity sev)
+        public void Log(string message, Severity sev)
         {
             Editor ed = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.CurrentDocument.Editor;
-            ed.WriteMessage(Message);
-        }
-
-        public enum Severity
-        {
-            Debug,
-            Information,
-            Warning,
-            Error,
-            Crash
+            ed.WriteMessage(message);
         }
     }
 }

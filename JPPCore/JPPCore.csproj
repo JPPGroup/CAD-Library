@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication.cs" />
-    <Compile Include="AuthToken.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="LibrarySystem\Branch.cs" />
     <Compile Include="Autocad\CircleObject.cs" />
     <Compile Include="Autocad\ClickHandler\ClickOverride.cs" />
