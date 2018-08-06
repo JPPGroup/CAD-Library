@@ -9,6 +9,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Inst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPPCore.Tests", "JPPCore.Tests\JPPCore.Tests.csproj", "{C8276950-3D76-4B7A-8BAB-7231923FD1C8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JPPServer", "JPPServer\JPPServer.csproj", "{22EE8295-D252-4394-B52F-F08304DAE9CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,14 @@ Global
 		{C8276950-3D76-4B7A-8BAB-7231923FD1C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8276950-3D76-4B7A-8BAB-7231923FD1C8}.Release|x64.ActiveCfg = Release|Any CPU
 		{C8276950-3D76-4B7A-8BAB-7231923FD1C8}.Release|x64.Build.0 = Release|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{22EE8295-D252-4394-B52F-F08304DAE9CF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

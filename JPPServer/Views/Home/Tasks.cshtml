@@ -1,0 +1,23 @@
+﻿@model List<GenericTask>
+@{
+    ViewData["Title"] = "Tasks";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<table>
+    <tr>
+        <th>
+            Task
+        </th>
+        <th>
+            Status
+        </th>
+    </tr>
+    @{ 
+        foreach(GenericTask task in Model)
+        {
+            @:<tr><td>@task.Name</td><td>@task.Status</td></tr>
+        }
+    }
+</table>
