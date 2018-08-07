@@ -118,16 +118,55 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Core_Autoload_Enable" xml:space="preserve">
+    <value>Enable autoload</value>
+  </data>
+  <data name="Core_Autoload_QueryEnable" xml:space="preserve">
+    <value>JPP Library does not currently load automatically. Would you like to enable this?</value>
+  </data>
+  <data name="Core_Autoload_Skip" xml:space="preserve">
+    <value>No, continue without</value>
+  </data>
+  <data name="Core_Autoload_Warn" xml:space="preserve">
+    <value>May cause unexpected behaviour on an unsupported version of Autocad</value>
+  </data>
+  <data name="Core_Installer_ExitAndInstall" xml:space="preserve">
+    <value>Exit and Install</value>
+  </data>
+  <data name="Core_Installer_NewVersion" xml:space="preserve">
+    <value>A new version of the application has been found. Would you like to install now?</value>
+  </data>
+  <data name="Core_Installer_SkipInstall" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="Core_Menu_SettingsName" xml:space="preserve">
+    <value>Display the settings window</value>
+  </data>
+  <data name="Core_Menu_SettingsText" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Error_ModuleDirectoryMissing" xml:space="preserve">
+    <value>Module directory not found, no modules loaded.</value>
+  </data>
+  <data name="Error_ModuleLoadFailedAuthentication" xml:space="preserve">
+    <value>Authentication failed, no modules loaded.</value>
+  </data>
+  <data name="Inform_LoadedMain" xml:space="preserve">
+    <value>JPP Core loaded.\n</value>
+  </data>
+  <data name="Inform_LoadingMain" xml:space="preserve">
+    <value>Loading CoreMain...\n</value>
+  </data>
   <data name="Locked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Locked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="package" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\package.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UnLocked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UnLocked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="package" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\package.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

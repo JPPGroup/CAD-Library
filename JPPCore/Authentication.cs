@@ -1,43 +1,43 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
-
-namespace JPP.Core
+﻿namespace JPP.Core
 {
-    class Authentication
+    internal class Authentication
     {
+        #region Public Variables
+
+        private static Authentication _current;
+
         public static Authentication Current
         {
-            get
-            {
-                if(_Current == null)
-                {
-                    _Current = new Authentication();
-                }
-                return _Current;
-            }
+            get { return _current ?? (_current = new Authentication()); }
         }
 
-        private static Authentication _Current;
+        #endregion
 
-        private bool? _Authenticated;
+        #region Private Variables
+
+        private bool? _authenticated;
+
+        #endregion
 
         public bool Authenticated()
         {
-            if(_Authenticated == null)
+            if (_authenticated == null)
             {
-                _Authenticated = CheckLicense();
+                _authenticated = CheckLicense();
             }
 
-            return (bool)_Authenticated;
+            return (bool) _authenticated;
         }
 
         private bool CheckLicense()
         {
-#if DEBUG
-            Logger.Log("Running in debug mode, no authentication required", Severity.Information);
+            #if DEBUG
+            CoreMain.Log.Entry("Running in debug mode, no authentication required", Severity.Information);
             return true;
-#else
-
-#endif
+            #else
+            //TODO: Implement authentication
+            return false;
+            #endif
         }
     }
 }

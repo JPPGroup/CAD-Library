@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -7,8 +6,6 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using Autodesk.Civil.ApplicationServices;
@@ -80,36 +77,10 @@ namespace JPP.Core
             }
         }
 
-        #endregion
-
-        #region Command Methods
-
-        [CommandMethod("Finalise", CommandFlags.Session)]
-        public static void Finalise()
-        {
-            Document acDoc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-
-            using (DocumentLock dl = acDoc.LockDocument())
-            {
-                using (Transaction tr = acDoc.Database.TransactionManager.StartTransaction())
-                {
-                    //Run the cleanup commands
-                    Utilities.Purge();
-
-                    acDoc.Database.Audit(true, false);
-                }
-            }
-
-            string path = acDoc.Database.Filename;
-
-            acDoc.Database.SaveAs(path, DwgVersion.Current);
-            acDoc.CloseAndDiscard();
-
-            FileInfo fi = new FileInfo(path)
-            {
-                IsReadOnly = true
-            };
-        }
+        /// <summary>
+        /// Current Log implementation
+        /// </summary>
+        public static ILogger Log { get; private set; }
 
         #endregion
 
@@ -132,12 +103,12 @@ namespace JPP.Core
         private static ClickOverride _clickOverride;
 
         /// <summary>
-        /// Is software running under the core console?
+        /// Is software running under the core console? Null when this has not yet been checked
         /// </summary>
         private static bool? _coreConsole;
 
         /// <summary>
-        /// Is software running under civil 3d?
+        /// Is software running under civil 3d? Null when this has not yet been checked
         /// </summary>
         private static bool? _civil3D;
 
@@ -157,7 +128,7 @@ namespace JPP.Core
             //If not running in console only, detect if ribbon is currently loaded, and if not wait until the application is Idle.
             //Throws an error if try to add to the menu with the ribbon unloaded
             if (CoreConsole)
-                InitJPP();
+                InitExtension();
             else
             {
                 if (ComponentManager.Ribbon == null)
@@ -165,7 +136,7 @@ namespace JPP.Core
                 else
                 {
                     //Ribbon existis, call the initialize method directly
-                    InitJPP();
+                    InitExtension();
                 }
             }
         }
@@ -182,12 +153,12 @@ namespace JPP.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Application_Idle(object sender, EventArgs e)
+        private static void Application_Idle(object sender, EventArgs e)
         {
             //Unhook the event handler to prevent multiple calls
             Autodesk.AutoCAD.ApplicationServices.Core.Application.Idle -= Application_Idle;
             //Call the initialize method now the application is loaded
-            InitJPP();
+            InitExtension();
         }
 
         #endregion
@@ -197,12 +168,15 @@ namespace JPP.Core
         /// <summary>
         /// Init JPP command loads all essential elements of the program, including the helper DLL files.
         /// </summary>
-        public static void InitJPP()
+        public static void InitExtension()
         {
-            Logger.Log("Loading JPP Core...\n");
-            //Create the main UI
-            RibbonTab JPPTab = CreateTab();
-            CreateCoreMenu(JPPTab);
+            //TODO: Add code here for choosing log type
+            Log = new Logger();
+
+            Log.Entry(Resources.Inform_LoadingMain);
+            
+            if(!CoreConsole)
+                CreateUI();
 
             //Load the additional DLL files, but only not if running in debug mode
             #if !DEBUG
@@ -210,15 +184,23 @@ namespace JPP.Core
             #endif
             LoadModules();
 
+            Log.Entry(Resources.Inform_LoadedMain);
+        }
+
+        public static void CreateUI()
+        {
+            //Create the main UI
+            RibbonTab jppTab = CreateTab();
+            CreateCoreMenu(jppTab);
 
             //Create settings window
             //TODO: move common window creation code to utilities method
             _settingsWindow = new PaletteSet("JPP", new Guid("9dc86012-b4b2-49dd-81e2-ba3f84fdf7e3"))
             {
                 Size = new Size(600, 800),
-                Style = (PaletteSetStyles) ((int) PaletteSetStyles.ShowAutoHideButton +
-                                            (int) PaletteSetStyles.ShowCloseButton),
-                DockEnabled = (DockSides) ((int) DockSides.Left + (int) DockSides.Right)
+                Style = (PaletteSetStyles)((int)PaletteSetStyles.ShowAutoHideButton +
+                                           (int)PaletteSetStyles.ShowCloseButton),
+                DockEnabled = (DockSides)((int)DockSides.Left + (int)DockSides.Right)
             };
 
             ElementHost settingsWindowHost = new ElementHost();
@@ -227,36 +209,30 @@ namespace JPP.Core
             settingsWindowHost.Child = new SettingsUserControl();
             _settingsWindow.Add("Settings", settingsWindowHost);
             _settingsWindow.KeepFocus = false;
-
-            //Load click handler;
-            _clickOverride = ClickOverride.Current;
-
+            
             //Check for registry key for autoload
             if (!RegistryHelper.IsAutoload())
             {
                 //No autoload found
                 //TODO: try to condense this into a helper method
                 TaskDialog autoloadPrompt = new TaskDialog();
-                autoloadPrompt.WindowTitle = Constants.Friendly_Name;
-                autoloadPrompt.MainInstruction =
-                    "JPP Library does not currently load automatically. Would you like to enable this?";
+                autoloadPrompt.WindowTitle = Constants.FRIENDLY_NAME;
+                autoloadPrompt.MainInstruction = Resources.Core_Autoload_QueryEnable;
                 autoloadPrompt.MainIcon = TaskDialogIcon.Information;
-                autoloadPrompt.FooterText = "May cause unexpected behaviour on an unsupported version of Autocad";
+                autoloadPrompt.FooterText = Resources.Core_Autoload_Warn;
                 autoloadPrompt.FooterIcon = TaskDialogIcon.Warning;
-                autoloadPrompt.Buttons.Add(new TaskDialogButton(0, "No, continue without"));
-                autoloadPrompt.Buttons.Add(new TaskDialogButton(1, "Enable autoload"));
+                autoloadPrompt.Buttons.Add(new TaskDialogButton(0, Resources.Core_Autoload_Skip));
+                autoloadPrompt.Buttons.Add(new TaskDialogButton(1, Resources.Core_Autoload_Enable));
                 autoloadPrompt.DefaultButton = 0;
-                autoloadPrompt.Callback = delegate(ActiveTaskDialog atd, TaskDialogCallbackArgs e, object sender)
+                autoloadPrompt.Callback = delegate (ActiveTaskDialog atd, TaskDialogCallbackArgs e, object sender)
                 {
-                    if (e.Notification == TaskDialogNotification.ButtonClicked)
+                    if (e.Notification != TaskDialogNotification.ButtonClicked) return false;
+                    if (e.ButtonId == 1)
                     {
-                        if (e.ButtonId == 1)
-                        {
-                            //TODO: Disable when registry is ok
-                            //RegistryHelper.CreateAutoload();
-                            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowAlertDialog(
-                                "Autload creation currently disabled.");
-                        }
+                        //TODO: Disable when registry is ok
+                        //RegistryHelper.CreateAutoload();
+                        Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowAlertDialog(
+                            "Autload creation currently disabled.");
                     }
 
                     return false;
@@ -264,7 +240,8 @@ namespace JPP.Core
                 autoloadPrompt.Show(Autodesk.AutoCAD.ApplicationServices.Core.Application.MainWindow.Handle);
             }
 
-            Logger.Log("JPP Core loaded.\n");
+            //Load click handler;
+            _clickOverride = ClickOverride.Current;
         }
 
         /// <summary>
@@ -274,27 +251,25 @@ namespace JPP.Core
         public static RibbonTab CreateTab()
         {
             RibbonControl rc = ComponentManager.Ribbon;
-            RibbonTab JPPTab = new RibbonTab();
+            RibbonTab jppTab = new RibbonTab();
 
             //Pull names from constant file as used in all subsequent DLL's
-            JPPTab.Name = Constants.Jpp_Tab_Title;
-            JPPTab.Title = Constants.Jpp_Tab_Title;
-            JPPTab.Id = Constants.Jpp_Tab_Id;
+            jppTab.Name = Constants.JPP_TAB_TITLE;
+            jppTab.Title = Constants.JPP_TAB_TITLE;
+            jppTab.Id = Constants.JPP_TAB_ID;
 
-            rc.Tabs.Add(JPPTab);
-            return JPPTab;
+            rc.Tabs.Add(jppTab);
+            return jppTab;
         }
 
         /// <summary>
         /// Add the core elements of the ui
         /// </summary>
-        /// <param name="JPPTab">The tab to add the ui elements to</param>
-        public static void CreateCoreMenu(RibbonTab JPPTab)
+        /// <param name="jppTab">The tab to add the ui elements to</param>
+        public static void CreateCoreMenu(RibbonTab jppTab)
         {
-            RibbonPanel Panel = new RibbonPanel();
-            RibbonPanelSource source = new RibbonPanelSource();
-            source.Title = "General";
-
+            RibbonPanel panel = new RibbonPanel();
+            RibbonPanelSource source = new RibbonPanelSource {Title = "General"};
             RibbonRowPanel stack = new RibbonRowPanel();
 
             /*RibbonButton finaliseButton = Utilities.CreateButton("Finalise Drawing", Properties.Resources.package, RibbonItemSize.Standard, "Finalise");
@@ -306,27 +281,30 @@ namespace JPP.Core
             stack.Items.Add(new RibbonRowBreak());*/
 
             //Create the button used to toggle the settings on or off
-            _settingsButton = new RibbonToggleButton();
-            _settingsButton.ShowText = true;
-            _settingsButton.ShowImage = true;
-            _settingsButton.Text = "Settings";
-            _settingsButton.Name = "Display the settings window";
+            _settingsButton = new RibbonToggleButton
+            {
+                ShowText = true,
+                ShowImage = true,
+                Text = Resources.Core_Menu_SettingsText,
+                Name = Resources.Core_Menu_SettingsName,
+                Size = RibbonItemSize.Standard,
+                Orientation = Orientation.Horizontal,
+                Image = Utilities.LoadImage(Resources.settings)
+            };
             _settingsButton.CheckStateChanged += settingsButton_CheckStateChanged;
-            _settingsButton.Image = Utilities.LoadImage(Resources.settings);
-            _settingsButton.Size = RibbonItemSize.Standard;
-            _settingsButton.Orientation = Orientation.Horizontal;
+            
             stack.Items.Add(_settingsButton);
             stack.Items.Add(new RibbonRowBreak());
 
             //Add the new tab section to the main tab
             source.Items.Add(stack);
-            Panel.Source = source;
-            JPPTab.Panels.Add(Panel);
+            panel.Source = source;
+            jppTab.Panels.Add(panel);
         }
 
         private static void settingsButton_CheckStateChanged(object sender, EventArgs e)
         {
-            _settingsWindow.Visible = _settingsButton.CheckState == true ? true : false;
+            _settingsWindow.Visible = _settingsButton.CheckState == true;
         }
 
         #endregion
@@ -338,13 +316,11 @@ namespace JPP.Core
         /// </summary>
         public static void LoadModules()
         {
-            var allAssemblies = new List<string>();
             #if DEBUG
             string path = Assembly.GetExecutingAssembly().Location;
             #else
-            string path =
- Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library";
-#endif
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library";
+            #endif
 
             //Check if authenticated, otherwise block the auto loading
             if (Authentication.Current.Authenticated())
@@ -354,11 +330,18 @@ namespace JPP.Core
                 {
                     foreach (string dll in Directory.GetFiles(path, "*.dll"))
                     {
-                        string dllPath = dll.Replace('\\', '/');
                         //Load the additional libraries found
-                        Assembly module = ExtensionLoader.Load(dll);
+                        ExtensionLoader.Load(dll);
                     }
                 }
+                else
+                {
+                    Log.Entry(Resources.Error_ModuleDirectoryMissing, Severity.Error);
+                }
+            }
+            else
+            {
+                Log.Entry(Resources.Error_ModuleLoadFailedAuthentication, Severity.Error);
             }
         }
 
@@ -367,16 +350,16 @@ namespace JPP.Core
         {
             bool updateRequired = false;
             bool installUpdateRequired = false;
-            string archivePath;
             string installerPath = "";
 
             //Get manifest file from known location
             if (File.Exists("M:\\ML\\CAD-Library\\manifest.txt"))
             {
+                string archivePath;
                 using (TextReader tr = File.OpenText("M:\\ML\\CAD-Library\\manifest.txt"))
                 {
                     //Currently manifest file contians version of zip file to pull data from
-                    archivePath = Constants.ArchivePath + tr.ReadLine() + ".zip";
+                    archivePath = Constants.ARCHIVE_PATH + tr.ReadLine() + ".zip";
                     if (tr.Peek() != -1) installerPath = "M:\\ML\\CAD-Library\\" + tr.ReadLine() + ".exe";
                 }
 
@@ -388,7 +371,7 @@ namespace JPP.Core
                                       "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt"))
                     {
                         //Currently manifest file contians version of zip file to pull data from
-                        if (archivePath != Constants.ArchivePath + tr.ReadLine() + ".zip") updateRequired = true;
+                        if (archivePath != Constants.ARCHIVE_PATH + tr.ReadLine() + ".zip") updateRequired = true;
                         if (tr.Peek() != -1)
                         {
                             if (installerPath != "M:\\ML\\CAD-Library\\" + tr.ReadLine() + ".exe")
@@ -413,15 +396,17 @@ namespace JPP.Core
                     {
                         if (updateRequired)
                         {
-                            ZipArchive archive = ZipFile.OpenRead(archivePath);
 
                             //string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\bin";
                             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                           "\\JPP Consulting\\JPP AutoCad Library";
                             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                            foreach (ZipArchiveEntry entry in archive.Entries)
+                            using (ZipArchive archive = ZipFile.OpenRead(archivePath))
                             {
-                                entry.ExtractToFile(Path.Combine(path, entry.FullName), true);
+                                foreach (ZipArchiveEntry entry in archive.Entries)
+                                {
+                                    entry.ExtractToFile(Path.Combine(path, entry.FullName), true);
+                                }
                             }
 
                             sw.WriteLine(archivePath);
@@ -431,12 +416,12 @@ namespace JPP.Core
                         if (installerPath != "" && installUpdateRequired)
                         {
                             TaskDialog autoloadPrompt = new TaskDialog();
-                            autoloadPrompt.WindowTitle = Constants.Friendly_Name;
+                            autoloadPrompt.WindowTitle = Constants.FRIENDLY_NAME;
                             autoloadPrompt.MainInstruction =
-                                "A new version of the application has been found. Would you like to install now?";
+                                Resources.Core_Installer_NewVersion;
                             autoloadPrompt.MainIcon = TaskDialogIcon.Information;
-                            autoloadPrompt.Buttons.Add(new TaskDialogButton(0, "Exit and install"));
-                            autoloadPrompt.Buttons.Add(new TaskDialogButton(1, "Not right now"));
+                            autoloadPrompt.Buttons.Add(new TaskDialogButton(0, Resources.Core_Installer_ExitAndInstall));
+                            autoloadPrompt.Buttons.Add(new TaskDialogButton(1, Resources.Core_Installer_SkipInstall));
                             autoloadPrompt.DefaultButton = 0;
                             autoloadPrompt.Callback = delegate(ActiveTaskDialog atd, TaskDialogCallbackArgs e,
                                 object sender)
@@ -460,7 +445,7 @@ namespace JPP.Core
                             sw.WriteLine(installerPath);
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new NotImplementedException();
                     }

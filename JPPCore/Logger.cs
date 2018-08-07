@@ -4,12 +4,12 @@ namespace JPP.Core
 {
     public class Logger : ILogger
     {
-        public void Log(string message)
+        public void Entry(string message)
         {
-            Log(message, Severity.Information);
+            Entry(message, Severity.Information);
         }
 
-        public void Log(string message, Severity sev)
+        public void Entry(string message, Severity sev)
         {
             Editor ed = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.CurrentDocument.Editor;
             ed.WriteMessage(message);

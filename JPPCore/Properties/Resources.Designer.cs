@@ -19,10 +19,10 @@ namespace JPP.Core.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace JPP.Core.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("JPP.Core.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace JPP.Core.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,126 @@ namespace JPP.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable autoload.
+        /// </summary>
+        public static string Core_Autoload_Enable {
+            get {
+                return ResourceManager.GetString("Core_Autoload_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JPP Library does not currently load automatically. Would you like to enable this?.
+        /// </summary>
+        public static string Core_Autoload_QueryEnable {
+            get {
+                return ResourceManager.GetString("Core_Autoload_QueryEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, continue without.
+        /// </summary>
+        public static string Core_Autoload_Skip {
+            get {
+                return ResourceManager.GetString("Core_Autoload_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May cause unexpected behaviour on an unsupported version of Autocad.
+        /// </summary>
+        public static string Core_Autoload_Warn {
+            get {
+                return ResourceManager.GetString("Core_Autoload_Warn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit and Install.
+        /// </summary>
+        public static string Core_Installer_ExitAndInstall {
+            get {
+                return ResourceManager.GetString("Core_Installer_ExitAndInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of the application has been found. Would you like to install now?.
+        /// </summary>
+        public static string Core_Installer_NewVersion {
+            get {
+                return ResourceManager.GetString("Core_Installer_NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not now.
+        /// </summary>
+        public static string Core_Installer_SkipInstall {
+            get {
+                return ResourceManager.GetString("Core_Installer_SkipInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the settings window.
+        /// </summary>
+        public static string Core_Menu_SettingsName {
+            get {
+                return ResourceManager.GetString("Core_Menu_SettingsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Core_Menu_SettingsText {
+            get {
+                return ResourceManager.GetString("Core_Menu_SettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module directory not found, no modules loaded..
+        /// </summary>
+        public static string Error_ModuleDirectoryMissing {
+            get {
+                return ResourceManager.GetString("Error_ModuleDirectoryMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication failed, no modules loaded..
+        /// </summary>
+        public static string Error_ModuleLoadFailedAuthentication {
+            get {
+                return ResourceManager.GetString("Error_ModuleLoadFailedAuthentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JPP Core loaded.\n.
+        /// </summary>
+        public static string Inform_LoadedMain {
+            get {
+                return ResourceManager.GetString("Inform_LoadedMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading CoreMain...\n.
+        /// </summary>
+        public static string Inform_LoadingMain {
+            get {
+                return ResourceManager.GetString("Inform_LoadingMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Locked {
+        public static System.Drawing.Bitmap Locked {
             get {
                 object obj = ResourceManager.GetObject("Locked", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +190,7 @@ namespace JPP.Core.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap package {
+        public static System.Drawing.Bitmap package {
             get {
                 object obj = ResourceManager.GetObject("package", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +200,7 @@ namespace JPP.Core.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap settings {
+        public static System.Drawing.Bitmap settings {
             get {
                 object obj = ResourceManager.GetObject("settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +210,7 @@ namespace JPP.Core.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap UnLocked {
+        public static System.Drawing.Bitmap UnLocked {
             get {
                 object obj = ResourceManager.GetObject("UnLocked", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

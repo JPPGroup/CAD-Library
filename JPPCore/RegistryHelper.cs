@@ -23,7 +23,7 @@ namespace JPP.Core
                     string[] apps = app.GetSubKeyNames();
                     foreach (string s in apps)
                     {
-                        if (s == Constants.Registry_Name)
+                        if (s == Constants.REGISTRY_NAME)
                         {
                             return true;
                         }
@@ -51,13 +51,13 @@ namespace JPP.Core
                     bool found = false;
                     foreach (string s in apps)
                     {
-                        if (s == Constants.Registry_Name)
+                        if (s == Constants.REGISTRY_NAME)
                         {
                             found = true;
                         }
                     }
 
-                    using (RegistryKey rKey = app.CreateSubKey(Constants.Registry_Name))
+                    using (RegistryKey rKey = app.CreateSubKey(Constants.REGISTRY_NAME))
                     {
                         rKey.SetValue("DESCRIPTION", "Loader for JPP Cad Library", Microsoft.Win32.RegistryValueKind.String);
                         rKey.SetValue("LOADCTRLS", 2, Microsoft.Win32.RegistryValueKind.DWord);

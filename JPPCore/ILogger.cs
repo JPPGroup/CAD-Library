@@ -9,20 +9,20 @@ namespace JPP.Core
     /// <summary>
     /// Generic definition of a logging service
     /// </summary>
-    interface ILogger
+    public interface ILogger
     {
         /// <summary>
         /// Add message to log with default severity of Information
         /// </summary>
         /// <param name="message">Message to be added</param>
-        void Log(string message);
+        void Entry(string message);
 
         /// <summary>
         /// Add message to log with specified severity
         /// </summary>
         /// <param name="message">Message to be added</param>
         /// <param name="sev">Severity of message</param>
-        void Log(string message, Severity sev);
+        void Entry(string message, Severity sev);
     }
 
     public enum Severity
