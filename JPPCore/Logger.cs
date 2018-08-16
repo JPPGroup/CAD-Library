@@ -1,9 +1,12 @@
-﻿using Autodesk.AutoCAD.EditorInput;
+﻿using Autodesk.AutoCAD.ApplicationServices.Core;
+using Autodesk.AutoCAD.EditorInput;
 
 namespace JPP.Core
 {
     public class Logger : ILogger
     {
+        #region Interfaces
+
         public void Entry(string message)
         {
             Entry(message, Severity.Information);
@@ -11,8 +14,10 @@ namespace JPP.Core
 
         public void Entry(string message, Severity sev)
         {
-            Editor ed = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.CurrentDocument.Editor;
+            Editor ed = Application.DocumentManager.CurrentDocument.Editor;
             ed.WriteMessage(message);
         }
+
+        #endregion
     }
 }

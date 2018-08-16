@@ -36,7 +36,7 @@
             return true;
             #else
             //TODO: Implement authentication
-            return false;
+            return true;
             #endif
         }
     }

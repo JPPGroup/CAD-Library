@@ -29,6 +29,7 @@ Global
 		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Debug|x64.ActiveCfg = Debug
 		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Debug|x64.Build.0 = Debug
 		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Release|Any CPU.ActiveCfg = Release
+		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Release|Any CPU.Build.0 = Release
 		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Release|x64.ActiveCfg = Release
 		{5F1596F7-CFA2-42A6-B9F3-CA6B4A96B47B}.Release|x64.Build.0 = Release
 		{C8276950-3D76-4B7A-8BAB-7231923FD1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,9 +45,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_SortFileContentOnSave = True
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_NeutralResourcesLanguage = en-GB
 		SolutionGuid = {E9E79A2E-8E22-4B59-82B9-E3B218F49B03}
+		RESX_NeutralResourcesLanguage = en-GB
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_SortFileContentOnSave = True
 	EndGlobalSection
 EndGlobal

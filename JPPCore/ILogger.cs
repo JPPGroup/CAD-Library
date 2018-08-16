@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JPP.Core
+﻿namespace JPP.Core
 {
     /// <summary>
     /// Generic definition of a logging service
@@ -25,6 +19,9 @@ namespace JPP.Core
         void Entry(string message, Severity sev);
     }
 
+    /// <summary>
+    /// Indicates the severity of the log message
+    /// </summary>
     public enum Severity
     {
         Debug,

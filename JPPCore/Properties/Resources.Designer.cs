@@ -160,7 +160,8 @@ namespace JPP.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JPP Core loaded.\n.
+        ///   Looks up a localized string similar to JPP Core loaded.
+        ///.
         /// </summary>
         public static string Inform_LoadedMain {
             get {
@@ -169,7 +170,8 @@ namespace JPP.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading CoreMain...\n.
+        ///   Looks up a localized string similar to Loading CoreMain...
+        ///.
         /// </summary>
         public static string Inform_LoadingMain {
             get {
