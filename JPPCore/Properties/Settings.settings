@@ -5,5 +5,8 @@
     <Setting Name="ModulePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">\bin</Value>
     </Setting>
+    <Setting Name="ProjectWorkbook" Type="System.String" Scope="User">
+      <Value Profile="(Default)">S:\JPP Administration\Job book\Current job book\Project reference Index Temp.xlsx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

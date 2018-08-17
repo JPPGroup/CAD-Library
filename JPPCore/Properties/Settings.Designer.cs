@@ -34,5 +34,18 @@ namespace JPP.Core.Properties {
                 this["ModulePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S:\\JPP Administration\\Job book\\Current job book\\Project reference Index Temp.xlsx" +
+            "")]
+        public string ProjectWorkbook {
+            get {
+                return ((string)(this["ProjectWorkbook"]));
+            }
+            set {
+                this["ProjectWorkbook"] = value;
+            }
+        }
     }
 }

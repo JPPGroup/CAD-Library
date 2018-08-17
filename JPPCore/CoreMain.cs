@@ -112,6 +112,8 @@ namespace JPP.Core
         /// </summary>
         private static bool? _civil3D;
 
+        public static ProjectManager ProjectManager;
+
         #endregion
 
         #region Autocad Extension Lifecycle
@@ -177,6 +179,9 @@ namespace JPP.Core
             
             if(!CoreConsole)
                 CreateUI();
+
+            //Load key components
+            ProjectManager = new ProjectManager();
 
             //Load the additional DLL files, but only not if running in debug mode
             #if !DEBUG
