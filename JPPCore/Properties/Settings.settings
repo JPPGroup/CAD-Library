@@ -5,5 +5,11 @@
     <Setting Name="ModulePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">\bin</Value>
     </Setting>
+    <Setting Name="UpdateLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">M:\ML\CAD-Library\</Value>
+    </Setting>
+    <Setting Name="ArchivePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">M:\ML\CAD-Library\Libraries-v</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

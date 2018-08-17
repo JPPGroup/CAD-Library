@@ -97,6 +97,15 @@ namespace JPP.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to JPP Autocad Library.
+        /// </summary>
+        public static string Core_FriendlyName {
+            get {
+                return ResourceManager.GetString("Core_FriendlyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit and Install.
         /// </summary>
         public static string Core_Installer_ExitAndInstall {

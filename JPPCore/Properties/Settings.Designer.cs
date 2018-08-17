@@ -34,5 +34,29 @@ namespace JPP.Core.Properties {
                 this["ModulePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("M:\\ML\\CAD-Library\\")]
+        public string UpdateLocation {
+            get {
+                return ((string)(this["UpdateLocation"]));
+            }
+            set {
+                this["UpdateLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("M:\\ML\\CAD-Library\\Libraries-v")]
+        public string ArchivePath {
+            get {
+                return ((string)(this["ArchivePath"]));
+            }
+            set {
+                this["ArchivePath"] = value;
+            }
+        }
     }
 }

@@ -216,7 +216,7 @@ namespace JPP.Core
                 //No autoload found
                 //TODO: try to condense this into a helper method
                 TaskDialog autoloadPrompt = new TaskDialog();
-                autoloadPrompt.WindowTitle = Constants.FRIENDLY_NAME;
+                autoloadPrompt.WindowTitle = Resources.Core_FriendlyName;
                 autoloadPrompt.MainInstruction = Resources.Core_Autoload_QueryEnable;
                 autoloadPrompt.MainIcon = TaskDialogIcon.Information;
                 autoloadPrompt.FooterText = Resources.Core_Autoload_Warn;
@@ -352,29 +352,28 @@ namespace JPP.Core
             bool installUpdateRequired = false;
             string installerPath = "";
 
+            string root = Properties.Settings.Default.UpdateLocation;
+
             //Get manifest file from known location
-            if (File.Exists("M:\\ML\\CAD-Library\\manifest.txt"))
+            if (File.Exists(root + "manifest.txt"))
             {
                 string archivePath;
-                using (TextReader tr = File.OpenText("M:\\ML\\CAD-Library\\manifest.txt"))
+                using (TextReader tr = File.OpenText(root + "manifest.txt"))
                 {
-                    //Currently manifest file contians version of zip file to pull data from
-                    archivePath = Constants.ARCHIVE_PATH + tr.ReadLine() + ".zip";
-                    if (tr.Peek() != -1) installerPath = "M:\\ML\\CAD-Library\\" + tr.ReadLine() + ".exe";
+                    //Currently manifest file contains version of zip file to pull data from
+                    archivePath = Properties.Settings.Default.ArchivePath + tr.ReadLine() + ".zip";
+                    if (tr.Peek() != -1) installerPath = root + tr.ReadLine() + ".exe";
                 }
 
-                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                                "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt"))
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt"))
                 {
-                    using (TextReader tr =
-                        File.OpenText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                                      "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt"))
+                    using (TextReader tr = File.OpenText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt"))
                     {
                         //Currently manifest file contians version of zip file to pull data from
-                        if (archivePath != Constants.ARCHIVE_PATH + tr.ReadLine() + ".zip") updateRequired = true;
+                        if (archivePath != Properties.Settings.Default + tr.ReadLine() + ".zip") updateRequired = true;
                         if (tr.Peek() != -1)
                         {
-                            if (installerPath != "M:\\ML\\CAD-Library\\" + tr.ReadLine() + ".exe")
+                            if (installerPath != root + tr.ReadLine() + ".exe")
                                 installUpdateRequired = true;
                         }
                     }
@@ -386,20 +385,14 @@ namespace JPP.Core
                 }
 
                 //Get the current version for comparison
-
-                using (StreamWriter sw = new StreamWriter(File.Open(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt", FileMode.Create)))
+                using (StreamWriter sw = new StreamWriter(File.Open(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library\\manifest.txt", FileMode.Create)))
                 {
                     //Download the latest resources update
                     try
                     {
                         if (updateRequired)
                         {
-
-                            //string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\bin";
-                            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                                          "\\JPP Consulting\\JPP AutoCad Library";
+                            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\JPP Consulting\\JPP AutoCad Library";
                             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                             using (ZipArchive archive = ZipFile.OpenRead(archivePath))
                             {
@@ -416,9 +409,8 @@ namespace JPP.Core
                         if (installerPath != "" && installUpdateRequired)
                         {
                             TaskDialog autoloadPrompt = new TaskDialog();
-                            autoloadPrompt.WindowTitle = Constants.FRIENDLY_NAME;
-                            autoloadPrompt.MainInstruction =
-                                Resources.Core_Installer_NewVersion;
+                            autoloadPrompt.WindowTitle = Resources.Core_FriendlyName;
+                            autoloadPrompt.MainInstruction = Resources.Core_Installer_NewVersion;
                             autoloadPrompt.MainIcon = TaskDialogIcon.Information;
                             autoloadPrompt.Buttons.Add(new TaskDialogButton(0, Resources.Core_Installer_ExitAndInstall));
                             autoloadPrompt.Buttons.Add(new TaskDialogButton(1, Resources.Core_Installer_SkipInstall));
@@ -433,7 +425,6 @@ namespace JPP.Core
                                         Process.Start(installerPath);
                                         Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager
                                             .MdiActiveDocument.SendStringToExecute("quit ", true, false, true);
-                                        //Application.Quit();
                                     }
                                 }
 
